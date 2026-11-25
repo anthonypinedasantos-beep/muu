@@ -61,6 +61,17 @@ footer{border-top:1px solid #70405b35;padding:25px 0 32px;text-align:center;colo
 .discord-stats{display:flex;gap:22px;margin-top:14px}.discord-stats div{display:flex;flex-direction:column;gap:2px}.discord-stats strong{font-size:18px;line-height:1.1}.discord-stats span{font-size:10px;color:#856d82}
 .discord-join{display:inline-flex;align-items:center;gap:12px;padding:13px 17px;border-radius:12px;background:#5865f2;color:#fff;text-decoration:none;font-size:13px;font-weight:700;white-space:nowrap;transition:transform .2s,background .2s}.discord-join:hover{transform:translateY(-2px);background:#4752c4}
 @media(max-width:620px){.discord-community{align-items:flex-start;flex-wrap:wrap;padding:21px}.discord-mark{width:46px;height:46px;flex-basis:46px}.discord-copy{width:calc(100% - 70px)}.discord-join{width:100%;justify-content:center}.discord-stats{gap:18px}}
+
+/* Cookie notice */
+.cookie-consent{position:fixed;z-index:10001;left:22px;bottom:22px;width:min(430px,calc(100% - 32px));padding:21px 22px;border:1px solid #ffffff9c;border-radius:18px;background:#fffaf2f2;box-shadow:0 18px 55px #30203930;backdrop-filter:blur(16px);color:#432c4c;display:none}
+.cookie-consent.is-visible{display:block;animation:cookie-in .35s ease both}
+.cookie-consent h2{font-size:17px;margin:0 0 7px;letter-spacing:-.3px}
+.cookie-consent p{font-size:12px;line-height:1.6;color:#705d70;margin:0}
+.cookie-actions{display:flex;gap:9px;margin-top:16px}
+.cookie-actions button{flex:1;border:0;border-radius:10px;padding:11px 13px;font:700 12px inherit;cursor:pointer}
+.cookie-accept{background:#5865f2;color:white}.cookie-reject{background:#eee6ed;color:#513c54}
+@keyframes cookie-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:480px){.cookie-consent{left:12px;bottom:12px;width:calc(100% - 24px);padding:18px}}
 </style>
 </head>
 <body>
@@ -91,5 +102,17 @@ footer{border-top:1px solid #70405b35;padding:25px 0 32px;text-align:center;colo
 const load=async()=>{try{const r=await fetch("https://discord.com/api/v10/invites/K5Dxa4mtgP?with_counts=true",{cache:"no-store"});if(!r.ok)throw new Error("Discord counts unavailable");const d=await r.json();if(String(d.guild?.id)!=="1570151349935411332")throw new Error("Unexpected Discord server");online.textContent=Number(d.approximate_presence_count||0).toLocaleString();total.textContent=Number(d.approximate_member_count||0).toLocaleString()}catch{online.textContent="—";total.textContent="—"}};
 load();setInterval(load,60000);
 })();
+</script>
+
+<div class="cookie-consent" id="cookie-consent" role="dialog" aria-live="polite" aria-labelledby="cookie-title">
+  <h2 id="cookie-title">Your privacy matters</h2>
+  <p>RBXCONDOS uses a small first-party cookie to remember your choice. We do not use advertising or analytics cookies.</p>
+  <div class="cookie-actions">
+    <button class="cookie-accept" id="cookie-accept" type="button">Accept</button>
+    <button class="cookie-reject" id="cookie-reject" type="button">Reject</button>
+  </div>
+</div>
+<script>
+(()=>{const banner=document.getElementById("cookie-consent");if(!banner)return;const key="rbx_cookie_choice";const getChoice=()=>document.cookie.split("; ").find(row=>row.startsWith(key+"="));if(!getChoice())banner.classList.add("is-visible");const save=choice=>{document.cookie=key+"="+choice+"; Max-Age=15552000; Path=/; SameSite=Lax; Secure";banner.classList.remove("is-visible")};document.getElementById("cookie-accept").addEventListener("click",()=>save("accepted"));document.getElementById("cookie-reject").addEventListener("click",()=>save("rejected"));})();
 </script>
 </body></html>
