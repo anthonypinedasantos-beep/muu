@@ -181,7 +181,7 @@ async function findGroupGame() {
 }
 
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: getCorsHeaders(request) });
     }
