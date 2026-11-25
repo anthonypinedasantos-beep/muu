@@ -17,7 +17,7 @@ function getCorsHeaders(request) {
   ]);
   return {
     ...(allowedOrigins.has(origin) ? { "access-control-allow-origin": origin } : {}),
-    "access-control-allow-methods": "GET, OPTIONS",
+    "access-control-allow-methods": "POST, OPTIONS",
     "access-control-allow-headers": "content-type",
     "vary": "Origin"
   };
@@ -185,8 +185,41 @@ export default {
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: getCorsHeaders(request) });
     }
-    if (request.method !== "GET") return json(request, { error: "Método no permitido." }, 405);
+    if (request.method !== "POST") return json(request, { error: "Método no permitido." }, 405);
+    const origin = request.headers.get("Origin") || "";
+    const allowedOrigins = new Set([
+      "https://rbxcondos.xyz",
+      "https://www.rbxcondos.xyz"
+    ]);
+    if (!allowedOrigins.has(origin)) return json(request, { error: "Origen no permitido." }, 403);
     try {
+      if (!env.TURNSTILE_SECRET_KEY) {
+        return json(request, { error: "La verificación de seguridad no está configurada en el servidor." }, 503);
+      }
+      let body;
+      try { body = await request.json(); }
+      catch { return json(request, { error: "Solicitud no válida." }, 400); }
+      const token = typeof body?.turnstileToken === "string" ? body.turnstileToken : "";
+      if (!token || token.length > 2048) {
+        return json(request, { error: "Completa la verificación de Cloudflare antes de continuar." }, 400);
+      }
+      const verification = new FormData();
+      verification.set("secret", env.TURNSTILE_SECRET_KEY);
+      verification.set("response", token);
+      const clientIp = request.headers.get("CF-Connecting-IP");
+      if (clientIp) verification.set("remoteip", clientIp);
+      verification.set("idempotency_key", crypto.randomUUID());
+      const verifyResponse = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+        method: "POST",
+        body: verification
+      });
+      if (!verifyResponse.ok) {
+        return json(request, { error: "No se pudo comprobar la verificación. Inténtalo de nuevo." }, 502);
+      }
+      const verificationResult = await verifyResponse.json();
+      if (!verificationResult.success) {
+        return json(request, { error: "La verificación ha caducado o no es válida. Vuelve a completarla." }, 403);
+      }
       const game = await findGroupGame();
       if (!game) return json(request, { error: "No se encontró una experiencia del grupo con exactamente 3 jugadores máximos por servidor. Vuelve a intentarlo." }, 404);
       return json(request, { game });
