@@ -4,35 +4,120 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090b12">
-<title>RBXCONDOS — Roblox games</title>
+<meta name="description" content="Generador aleatorio de experiencias de Roblox creadas por miembros del grupo, con servidores de 3 jugadores.">
+<title>RBXCONDOS — Game Generator</title>
 <style>
 :root{color-scheme:dark;--bg:#090b12;--panel:#111521;--line:#252c3d;--muted:#929bb0;--text:#f4f6fb;--accent:#8b7cff;--accent2:#5e50df}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#28204d 0,transparent 48%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
-.wrap{width:min(1080px,calc(100% - 32px));margin:auto}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12}.brand{font-weight:850;letter-spacing:-.7px;font-size:20px}.brand span{color:#a99fff}.status{font-size:12px;color:#b8b2ff;border:1px solid #6558bb66;background:#6254c51c;padding:7px 11px;border-radius:99px}
-.hero{text-align:center;padding:82px 0 34px}.eyebrow{color:#aaa0ff;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}.hero h1{font-size:clamp(36px,7vw,64px);line-height:1.04;letter-spacing:-2.7px;margin:15px 0}.hero p{color:var(--muted);max-width:580px;margin:0 auto;font-size:16px}
-.search{display:flex;gap:10px;max-width:680px;margin:30px auto 0;padding:8px;background:#111522;border:1px solid #343b50;border-radius:17px;box-shadow:0 18px 70px #0008}.search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:white;padding:12px;font:inherit}.search button{border:0;border-radius:11px;padding:0 23px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-weight:800;font:inherit;cursor:pointer}.search button:disabled{opacity:.55;cursor:wait}
-.note{color:#7f899f;font-size:12px;margin-top:12px}.results{padding:25px 0 70px}.result-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.result-head h2{font-size:18px;margin:0}.count{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:15px}.game{overflow:hidden;background:linear-gradient(145deg,#151b2a,#10141e);border:1px solid var(--line);border-radius:16px;transition:.2s}.game:hover{transform:translateY(-3px);border-color:#6558bb}.thumb{width:100%;aspect-ratio:16/9;object-fit:cover;background:#202638;display:block}.gamebody{padding:15px}.game h3{font-size:15px;margin:0 0 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.creator{font-size:12px;color:var(--muted);margin-bottom:13px}.meta{display:flex;gap:7px;flex-wrap:wrap}.pill{font-size:11px;padding:5px 8px;border-radius:7px;background:#252b3c;color:#d6d9e5}.pill.good{background:#183c32;color:#8de2bd}.open{display:block;text-align:center;text-decoration:none;color:white;font-weight:750;background:#29234d;border:1px solid #6255ad66;border-radius:9px;padding:9px;margin-top:14px}.empty,.error{border:1px dashed #343b50;border-radius:15px;padding:28px;text-align:center;color:var(--muted)}.error{color:#ffb3b3;border-color:#794444}.footer{text-align:center;color:#69738a;font-size:12px;border-top:1px solid #ffffff12;padding:25px 0 35px}
-@media(max-width:540px){.hero{padding-top:60px}.search{padding:6px}.search button{padding:0 15px}.nav{height:64px}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -20%,#28204d 0,transparent 48%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+.wrap{width:min(900px,calc(100% - 32px));margin:auto}
+.nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12}
+.brand{font-weight:850;letter-spacing:-.7px;font-size:20px}.brand span{color:#a99fff}
+.status{font-size:12px;color:#b8b2ff;border:1px solid #6558bb66;background:#6254c51c;padding:7px 11px;border-radius:99px}
+.hero{text-align:center;padding:clamp(65px,12vh,115px) 0 42px}
+.eyebrow{color:#aaa0ff;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+h1{font-size:clamp(40px,8vw,70px);line-height:1.02;letter-spacing:-3px;margin:17px 0}
+h1 span{color:#a99fff}
+.hero p{color:var(--muted);max-width:570px;margin:0 auto;font-size:16px}
+.generator{display:flex;justify-content:center;margin:32px auto 0}
+.generate{border:0;border-radius:13px;padding:16px 30px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 10px 35px #6555d544;transition:transform .2s,opacity .2s}
+.generate:hover{transform:translateY(-2px)}.generate:disabled{opacity:.6;cursor:wait;transform:none}
+.hint{color:#7f899f;font-size:12px;margin-top:14px}
+.result-wrap{padding:20px 0 65px;max-width:590px;margin:auto}
+.result{display:none;overflow:hidden;background:linear-gradient(145deg,#151b2a,#10141e);border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 70px #0005}
+.result.visible{display:block}
+.thumb{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#202638}
+.content{padding:20px}
+.kicker{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#aaa0ff;font-weight:800}
+h2{font-size:23px;line-height:1.2;margin:7px 0 5px;letter-spacing:-.5px}
+.creator{font-size:13px;color:var(--muted)}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:17px 0}
+.pill{font-size:12px;padding:7px 10px;border-radius:8px;background:#252b3c;color:#d6d9e5}
+.pill.good{background:#183c32;color:#8de2bd}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.play,.details{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:10px;padding:12px 17px;font-weight:800;font-size:13px}
+.play{flex:1;background:#f4f2ff;color:#171426}.details{border:1px solid #343b50;color:#e7e5f5}
+.message{display:none;margin:22px auto 0;padding:15px 18px;max-width:590px;border:1px dashed #343b50;border-radius:13px;color:var(--muted);text-align:center}
+.message.visible{display:block}.message.error{color:#ffb3b3;border-color:#794444}
+.footer{text-align:center;color:#69738a;font-size:12px;border-top:1px solid #ffffff12;padding:24px 0 32px}
+@media(max-width:540px){.nav{height:64px}.status{font-size:10px}.hero{padding-top:70px}h1{letter-spacing:-2px}.generate{width:100%}.actions{flex-direction:column}.play,.details{width:100%}}
 </style>
 </head>
 <body>
-<header class="wrap nav"><div class="brand">RBX<span>CONDOS</span></div><div class="status">ROBLOX GAME FINDER</div></header>
+<header class="wrap nav">
+  <div class="brand">RBX<span>CONDOS</span></div>
+  <div class="status">ROBLOX GAME GENERATOR</div>
+</header>
 <main class="wrap">
-<section class="hero">
-<div class="eyebrow">Descubre experiencias únicas</div>
-<h1>Encuentra juegos<br><span style="color:#a99fff">a tu manera.</span></h1>
-<p>Busca experiencias de Roblox con servidores de exactamente 3 jugadores. Sin juegos con servidores enormes.</p>
-<form class="search" id="searchForm"><input id="query" maxlength="80" placeholder="Busca un juego, género o palabra..." autocomplete="off"><button id="submit" type="submit">Buscar</button></form>
-<div class="note">Solo se muestran experiencias cuyo máximo de jugadores por servidor es exactamente 3.</div>
-</section>
-<section class="results" aria-live="polite"><div class="result-head"><h2 id="heading">Explorar experiencias</h2><span class="count" id="count"></span></div><div class="grid" id="results"><div class="empty" style="grid-column:1/-1">Escribe algo arriba para empezar a buscar.</div></div></section>
+  <section class="hero">
+    <div class="eyebrow">Experiencias de nuestra comunidad</div>
+    <h1>Un juego nuevo.<br><span>Un solo clic.</span></h1>
+    <p>Genera una experiencia aleatoria creada por un miembro del grupo de Roblox. Todos los juegos tienen servidores de máximo 3 jugadores.</p>
+    <div class="generator">
+      <button class="generate" id="generate" type="button">🎮 &nbsp; Generar juego</button>
+    </div>
+    <div class="hint">Sin Linkvertise · Enlace directo a Roblox · Máximo 3 jugadores por servidor</div>
+  </section>
+
+  <section class="result-wrap" aria-live="polite">
+    <article class="result" id="result">
+      <img class="thumb" id="thumbnail" alt="Miniatura del juego" hidden>
+      <div class="content">
+        <div class="kicker">Tu experiencia seleccionada</div>
+        <h2 id="gameName">Juego de Roblox</h2>
+        <div class="creator" id="creator"></div>
+        <div class="stats">
+          <span class="pill good" id="maxPlayers">3 jugadores máximo</span>
+          <span class="pill" id="playing">0 jugando</span>
+          <span class="pill" id="visits">0 visitas</span>
+        </div>
+        <div class="actions">
+          <a class="play" id="play" href="#" target="_blank" rel="noopener noreferrer">Jugar en Roblox ↗</a>
+          <a class="details" id="details" href="#" target="_blank" rel="noopener noreferrer">Ver página del juego</a>
+        </div>
+      </div>
+    </article>
+    <div class="message" id="message">Pulsa el botón para encontrar un juego.</div>
+  </section>
 </main>
 <footer class="wrap footer">RBXCONDOS · Proyecto independiente. No está afiliado a Roblox Corporation.</footer>
 <script>
-const form=document.getElementById('searchForm'),input=document.getElementById('query'),button=document.getElementById('submit'),grid=document.getElementById('results'),heading=document.getElementById('heading'),count=document.getElementById('count');
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function card(g){const img=g.thumbnail||'';return '<article class="game">'+(img?'<img class="thumb" loading="lazy" src="'+esc(img)+'" alt="">':'<div class="thumb"></div>')+'<div class="gamebody"><h3 title="'+esc(g.name)+'">'+esc(g.name)+'</h3><div class="creator">Por '+esc(g.creator||'Creador de Roblox')+'</div><div class="meta"><span class="pill good">3 jugadores máx.</span><span class="pill">'+Number(g.playing||0).toLocaleString('es-ES')+' jugando</span></div><a class="open" href="https://www.roblox.com/games/'+encodeURIComponent(g.placeId)+'" target="_blank" rel="noopener noreferrer">Ver en Roblox ↗</a></div></article>'}
-form.addEventListener('submit',async e=>{e.preventDefault();const q=input.value.trim();if(!q)return;button.disabled=true;button.textContent='Buscando…';heading.textContent='Buscando “'+q+'”';count.textContent='';grid.innerHTML='<div class="empty" style="grid-column:1/-1">Buscando experiencias y comprobando el límite de jugadores…</div>';try{const r=await fetch('/api/generate?q='+encodeURIComponent(q));const data=await r.json();if(!r.ok)throw new Error(data.error||'No se pudo completar la búsqueda.');const games=data.games||[];count.textContent=games.length+' resultados';grid.innerHTML=games.length?games.map(card).join(''):'<div class="empty" style="grid-column:1/-1">No encontramos juegos con exactamente 3 jugadores máximos para esa búsqueda. Prueba con otras palabras.</div>';}catch(err){grid.innerHTML='<div class="error" style="grid-column:1/-1">'+esc(err.message||'Error inesperado')+'</div>';}finally{button.disabled=false;button.textContent='Buscar';}});
+const button=document.getElementById("generate");
+const result=document.getElementById("result");
+const message=document.getElementById("message");
+const thumbnail=document.getElementById("thumbnail");
+const number=n=>Number(n||0).toLocaleString("es-ES");
+
+button.addEventListener("click",async()=>{
+  button.disabled=true;
+  button.textContent="Buscando un juego…";
+  result.classList.remove("visible");
+  message.className="message visible";
+  message.textContent="Revisando juegos creados por miembros del grupo…";
+  try{
+    const response=await fetch("/api/generate",{method:"GET",headers:{accept:"application/json"},cache:"no-store"});
+    const data=await response.json();
+    if(!response.ok||!data.game)throw new Error(data.error||"No se ha encontrado ningún juego. Inténtalo otra vez.");
+    const game=data.game;
+    document.getElementById("gameName").textContent=game.name||"Experiencia de Roblox";
+    document.getElementById("creator").textContent="Creado por "+(game.creator||"un miembro del grupo");
+    document.getElementById("maxPlayers").textContent="3 jugadores máximo";
+    document.getElementById("playing").textContent=number(game.playing)+" jugando";
+    document.getElementById("visits").textContent=number(game.visits)+" visitas";
+    document.getElementById("play").href=game.startUrl||("https://www.roblox.com/games/start?placeId="+game.placeId);
+    document.getElementById("details").href=game.gameUrl||("https://www.roblox.com/games/"+game.placeId);
+    if(game.thumbnail){thumbnail.src=game.thumbnail;thumbnail.hidden=false;}
+    else{thumbnail.removeAttribute("src");thumbnail.hidden=true;}
+    message.className="message";
+    result.classList.add("visible");
+  }catch(error){
+    message.className="message visible error";
+    message.textContent=error.message||"Ha ocurrido un error. Vuelve a intentarlo.";
+  }finally{
+    button.disabled=false;
+    button.textContent="🎮  Generar otro juego";
+  }
+});
 </script>
 </body>
 </html>
