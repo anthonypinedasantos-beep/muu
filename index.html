@@ -55,6 +55,9 @@ h2{font:700 clamp(23px,4vw,30px)/1.2 "Space Grotesk",sans-serif;margin:7px 0 4px
 .play,.details{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border-radius:10px;padding:12px 17px;font-size:13px;font-weight:800;transition:filter .2s,transform .2s}
 .play:hover,.details:hover{filter:brightness(1.12);transform:translateY(-1px)}
 .play{flex:1;background:#f3efff;color:#171326}.details{border:1px solid #393d55;color:#e8e5f5}
+.key-card{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:18px;padding:15px 16px;border:1px solid #55478a;background:linear-gradient(110deg,#211b39,#171829);border-radius:13px}
+.key-copy{min-width:0}.key-label{font-size:10px;color:#b7a8ff;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}.key-value{font:700 16px "Space Grotesk",sans-serif;letter-spacing:.5px;color:#fff;margin-top:3px;overflow-wrap:anywhere}
+.copy-key{flex-shrink:0;border:1px solid #7161ad;background:#40346a;color:#fff;border-radius:9px;padding:10px 13px;font:700 12px "DM Sans",sans-serif;cursor:pointer}.copy-key:hover{filter:brightness(1.15)}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
 .info-card{padding:17px;border:1px solid #ffffff12;background:#ffffff05;border-radius:13px}
 .info-icon{font-size:18px}.info-card h3{font:700 13px "Space Grotesk",sans-serif;margin:8px 0 4px}.info-card p{font-size:12px;color:var(--muted);margin:0}
@@ -103,6 +106,10 @@ h2{font:700 clamp(23px,4vw,30px)/1.2 "Space Grotesk",sans-serif;margin:7px 0 4px
           <a class="play" id="play" href="#" target="_blank" rel="noopener noreferrer">Play on Roblox ↗</a>
           <a class="details" id="details" href="#" target="_blank" rel="noopener noreferrer">View game details</a>
         </div>
+        <div class="key-card">
+          <div class="key-copy"><div class="key-label">Community key</div><div class="key-value" id="communityKey">discordggreceb</div></div>
+          <button class="copy-key" id="copyKey" type="button">Copy key</button>
+        </div>
       </div>
     </article>
     <div class="section-title">HOW IT WORKS</div>
@@ -123,6 +130,23 @@ const result=document.getElementById("result");
 const message=document.getElementById("message");
 const thumbnail=document.getElementById("thumbnail");
 const number=n=>Number(n||0).toLocaleString("en-US");
+const COMMUNITY_KEY="discordggreceb";
+document.getElementById("communityKey").textContent=COMMUNITY_KEY;
+document.getElementById("copyKey").addEventListener("click",async()=>{
+  const copyButton=document.getElementById("copyKey");
+  try{
+    await navigator.clipboard.writeText(COMMUNITY_KEY);
+    copyButton.textContent="Copied!";
+    setTimeout(()=>copyButton.textContent="Copy key",1600);
+  }catch{
+    copyButton.textContent="Select the key";
+    const selection=window.getSelection();
+    const range=document.createRange();
+    range.selectNodeContents(document.getElementById("communityKey"));
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+});
 
 button.addEventListener("click",async()=>{
   button.disabled=true;
