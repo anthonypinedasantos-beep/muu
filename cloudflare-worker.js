@@ -7,15 +7,24 @@ const MAX_BATCHES = 12;
 const CONCURRENCY = 5;
 let memberCache = { expiresAt: 0, ids: [] };
 
-const corsHeaders = {
-  "access-control-allow-origin": "https://rbxcondos.xyz",
-  "access-control-allow-methods": "GET, OPTIONS",
-  "access-control-allow-headers": "content-type",
-  "vary": "Origin"
-};
-const json = (data, status = 200) => new Response(JSON.stringify(data), {
+function getCorsHeaders(request) {
+  const origin = request.headers.get("Origin") || "";
+  const allowedOrigins = new Set([
+    "https://rbxcondos.xyz",
+    "https://www.rbxcondos.xyz",
+    "http://rbxcondos.xyz",
+    "http://www.rbxcondos.xyz"
+  ]);
+  return {
+    ...(allowedOrigins.has(origin) ? { "access-control-allow-origin": origin } : {}),
+    "access-control-allow-methods": "GET, OPTIONS",
+    "access-control-allow-headers": "content-type",
+    "vary": "Origin"
+  };
+}
+const json = (request, data, status = 200) => new Response(JSON.stringify(data), {
   status,
-  headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", ...corsHeaders }
+  headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", ...getCorsHeaders(request) }
 });
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -174,15 +183,15 @@ async function findGroupGame() {
 export default {
   async fetch(request) {
     if (request.method === "OPTIONS") {
-      return new Response(null, { status: 204, headers: corsHeaders });
+      return new Response(null, { status: 204, headers: getCorsHeaders(request) });
     }
-    if (request.method !== "GET") return json({ error: "Método no permitido." }, 405);
+    if (request.method !== "GET") return json(request, { error: "Método no permitido." }, 405);
     try {
       const game = await findGroupGame();
-      if (!game) return json({ error: "No se encontró una experiencia del grupo con exactamente 3 jugadores máximos por servidor. Vuelve a intentarlo." }, 404);
-      return json({ game });
+      if (!game) return json(request, { error: "No se encontró una experiencia del grupo con exactamente 3 jugadores máximos por servidor. Vuelve a intentarlo." }, 404);
+      return json(request, { game });
     } catch (error) {
-      return json({ error: "No se pudo generar un juego ahora mismo. " + (error?.message || "Inténtalo de nuevo más tarde.") }, 502);
+      return json(request, { error: "No se pudo generar un juego ahora mismo. " + (error?.message || "Inténtalo de nuevo más tarde.") }, 502);
     }
   }
 }
