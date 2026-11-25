@@ -3,67 +3,69 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080910">
+<meta name="theme-color" content="#e7a4a4">
 <meta name="description" content="Discover random Roblox experiences created by members of the RBXCONDOS community. Every selected experience has servers limited to 3 players.">
 <title>RBXCONDOS — Condo Game Generator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:dark;--bg:#080910;--panel:#111321;--panel2:#171a2b;--line:#292d43;--muted:#9298b1;--text:#f6f5ff;--purple:#9b83ff;--purple2:#7054ed;--cyan:#7ce7e1}
+:root{color-scheme:light;--bg:#f6c2b0;--panel:#fff0e9;--panel2:#f9d9d0;--line:#d99da8;--muted:#76576f;--text:#39243f;--purple:#70416f;--purple2:#51365f;--cyan:#4d9c9b;--coral:#ef906f}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -18%,#33245f 0,transparent 42%),radial-gradient(ellipse at 100% 45%,#152b3c55 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.6 "DM Sans",system-ui,sans-serif}
+body{margin:0;min-height:100vh;background:linear-gradient(180deg,#b985ad 0%,#e7a4a4 22%,#ffd09e 52%,#f6c2b0 76%,#d8a1b5 100%);color:var(--text);font:15px/1.6 "DM Sans",system-ui,sans-serif;position:relative}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 50% 42%,#fff2d566 0,transparent 46%),linear-gradient(90deg,#54365b22,transparent 22%,transparent 78%,#54365b22)}
 a{color:inherit}
 .shell{width:min(1080px,calc(100% - 40px));margin:auto}
-.topbar{height:78px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12}
-.logo{font:700 22px "Space Grotesk",sans-serif;letter-spacing:-1px}.logo span{color:var(--purple)}
+.topbar{height:78px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #603b5b35}
+.logo{font:700 22px "Space Grotesk",sans-serif;letter-spacing:-1px;color:#442b4b}.logo span{color:#8b4f70}
 .top-right{display:flex;align-items:center;gap:10px}
-.live{display:flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #5a4b9870;background:#8d74ff12;border-radius:99px;color:#c9bdff;font-size:11px;font-weight:800;letter-spacing:1px}
-.dot{width:7px;height:7px;border-radius:50%;background:#75e5b1;box-shadow:0 0 12px #75e5b1}
+.live{display:flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #68436555;background:#fff0e955;border-radius:99px;color:#543452;font-size:11px;font-weight:800;letter-spacing:1px}
+.dot{width:7px;height:7px;border-radius:50%;background:#4d9c82;box-shadow:0 0 10px #4d9c8299}
 .hero{text-align:center;padding:94px 0 46px}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;color:#c0b4ff;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
-.eyebrow:before,.eyebrow:after{content:"";width:22px;height:1px;background:#806ce8}
-h1{font:700 clamp(43px,8vw,78px)/.99 "Space Grotesk",sans-serif;letter-spacing:-4px;margin:22px 0 18px}
-h1 span{background:linear-gradient(100deg,#c6b8ff,#8f7bff 55%,#79d9e9);-webkit-background-clip:text;background-clip:text;color:transparent}
-.intro{max-width:650px;margin:auto;color:var(--muted);font-size:16px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:#684365;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.eyebrow:before,.eyebrow:after{content:"";width:22px;height:1px;background:#8b597e}
+h1{font:700 clamp(43px,8vw,78px)/.99 "Space Grotesk",sans-serif;letter-spacing:-4px;margin:22px 0 18px;color:#472e50}
+h1 span{background:linear-gradient(100deg,#74456e,#b75f70 52%,#498d8d);-webkit-background-clip:text;background-clip:text;color:transparent}
+.intro{max-width:650px;margin:auto;color:#684e66;font-size:16px}
 .cta-row{display:flex;justify-content:center;margin:30px auto 0}
-.generate{display:inline-flex;align-items:center;justify-content:center;gap:11px;border:1px solid #c1b5ff55;border-radius:13px;padding:16px 25px;background:linear-gradient(120deg,#9c83ff,#7054ed);color:white;font:800 14px "DM Sans",sans-serif;cursor:pointer;box-shadow:0 12px 40px #7054ed44;transition:transform .2s,filter .2s}
-.generate:hover{transform:translateY(-2px);filter:brightness(1.08)}.generate:disabled{opacity:.6;cursor:wait;transform:none}
+.generate{display:inline-flex;align-items:center;justify-content:center;gap:11px;border:1px solid #fff8;border-radius:13px;padding:16px 25px;background:linear-gradient(115deg,#74476f,#a95872 58%,#d47c6b);color:#fffaf5;font:800 14px "DM Sans",sans-serif;cursor:pointer;box-shadow:0 12px 32px #75456845;transition:transform .2s,filter .2s}
+.generate:hover{transform:translateY(-2px);filter:brightness(1.06)}.generate:disabled{opacity:.6;cursor:wait;transform:none}
 .generate svg{width:18px;height:18px}
-.subnote{margin-top:14px;color:#777f99;font-size:12px}
+.subnote{margin-top:14px;color:#765b70;font-size:12px}
 .result-area{max-width:720px;margin:0 auto;padding:10px 0 50px}
-.message{display:none;margin:0 auto 18px;padding:13px 16px;border:1px solid #35334d;background:#131323;border-radius:12px;color:#b9b5d3;text-align:center;font-size:13px}
-.message.visible{display:block}.message.error{border-color:#78454e;color:#ffb6c0;background:#28151d}
-.result{display:none;overflow:hidden;border:1px solid #37314f;border-radius:20px;background:linear-gradient(145deg,#171a2b,#10121d);box-shadow:0 25px 90px #0007}
+.message{display:none;margin:0 auto 18px;padding:13px 16px;border:1px solid #b77b91;background:#fff0e9d9;border-radius:12px;color:#63445f;text-align:center;font-size:13px}
+.message.visible{display:block}.message.error{border-color:#bd686c;color:#8e354b;background:#ffe4dc}
+.result{display:none;overflow:hidden;border:1px solid #b97f91;border-radius:20px;background:linear-gradient(145deg,#fff0e9f5,#f8d9d2f5);box-shadow:0 24px 65px #70405b2b}
 .result.visible{display:block;animation:appear .35s ease}
 @keyframes appear{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.cover{position:relative;background:linear-gradient(120deg,#282043,#182333);aspect-ratio:16/7;overflow:hidden}
-.cover:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#10121d)}
-.thumb{width:100%;height:100%;object-fit:cover;display:block}
-.cover-label{position:absolute;z-index:1;left:18px;top:18px;padding:7px 10px;border:1px solid #ffffff2a;background:#0a0b15b8;backdrop-filter:blur(10px);border-radius:8px;font-size:10px;font-weight:800;letter-spacing:1.3px}
+.cover{position:relative;background:linear-gradient(120deg,#8b5b88,#e69a8a 58%,#f4c18d);aspect-ratio:16/7;overflow:hidden}
+.cover:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#4e315533,transparent 60%),radial-gradient(ellipse at 75% 20%,#ffe0a899,transparent 48%)}
+.cover:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#f8d9d2)}
+.thumb{width:100%;height:100%;object-fit:cover;display:block;position:relative;mix-blend-mode:normal}
+.cover-label{position:absolute;z-index:1;left:18px;top:18px;padding:7px 10px;border:1px solid #fff9;background:#563957aa;backdrop-filter:blur(8px);border-radius:8px;color:#fff7ee;font-size:10px;font-weight:800;letter-spacing:1.3px}
 .content{padding:24px}
-.kicker{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#aa99ff;font-weight:800}
-h2{font:700 clamp(23px,4vw,30px)/1.2 "Space Grotesk",sans-serif;margin:7px 0 4px;letter-spacing:-.7px}
+.kicker{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#985b78;font-weight:800}
+h2{font:700 clamp(23px,4vw,30px)/1.2 "Space Grotesk",sans-serif;margin:7px 0 4px;letter-spacing:-.7px;color:#482f50}
 .creator{font-size:13px;color:var(--muted)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:21px 0}
-.stat{padding:12px 14px;background:#ffffff07;border:1px solid #ffffff10;border-radius:11px}
-.stat strong{display:block;font:700 18px "Space Grotesk",sans-serif;color:#f4f1ff}
-.stat span{display:block;color:#8991a9;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
-.stat.highlight strong{color:#91e5c1}
+.stat{padding:12px 14px;background:#fff8f1a8;border:1px solid #d9a8a7;border-radius:11px}
+.stat strong{display:block;font:700 18px "Space Grotesk",sans-serif;color:#4b3452}
+.stat span{display:block;color:#8a687c;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.stat.highlight strong{color:#438b80}
 .actions{display:flex;gap:10px;flex-wrap:wrap}
 .play,.details{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border-radius:10px;padding:12px 17px;font-size:13px;font-weight:800;transition:filter .2s,transform .2s}
-.play:hover,.details:hover{filter:brightness(1.12);transform:translateY(-1px)}
-.play{flex:1;background:#f3efff;color:#171326}.details{border:1px solid #393d55;color:#e8e5f5}
-.key-card{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:18px;padding:15px 16px;border:1px solid #55478a;background:linear-gradient(110deg,#211b39,#171829);border-radius:13px}
-.key-copy{min-width:0}.key-label{font-size:10px;color:#b7a8ff;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}.key-value{font:700 16px "Space Grotesk",sans-serif;letter-spacing:.5px;color:#fff;margin-top:3px;overflow-wrap:anywhere}
-.copy-key{flex-shrink:0;border:1px solid #7161ad;background:#40346a;color:#fff;border-radius:9px;padding:10px 13px;font:700 12px "DM Sans",sans-serif;cursor:pointer}.copy-key:hover{filter:brightness(1.15)}
+.play:hover,.details:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.play{flex:1;background:#563957;color:#fff5ec}.details{border:1px solid #b47e91;color:#593d5b;background:#fff5ee88}
+.key-card{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:18px;padding:15px 16px;border:1px solid #c38b9c;background:linear-gradient(110deg,#f5d4ce,#fff0e8);border-radius:13px}
+.key-copy{min-width:0}.key-label{font-size:10px;color:#87516f;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}.key-value{font:700 16px "Space Grotesk",sans-serif;letter-spacing:.5px;color:#49324f;margin-top:3px;overflow-wrap:anywhere}
+.copy-key{flex-shrink:0;border:1px solid #865c7b;background:#70476d;color:#fff8f0;border-radius:9px;padding:10px 13px;font:700 12px "DM Sans",sans-serif;cursor:pointer}.copy-key:hover{filter:brightness(1.12)}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
-.info-card{padding:17px;border:1px solid #ffffff12;background:#ffffff05;border-radius:13px}
-.info-icon{font-size:18px}.info-card h3{font:700 13px "Space Grotesk",sans-serif;margin:8px 0 4px}.info-card p{font-size:12px;color:var(--muted);margin:0}
-.section-title{text-align:center;margin:36px 0 15px;font:600 13px "Space Grotesk",sans-serif;color:#dcd7f7}
-.footer{margin-top:45px;border-top:1px solid #ffffff12;padding:24px 0 32px;text-align:center;color:#707891;font-size:11px}
-.footer strong{color:#b5a8ff;font-weight:700}
+.info-card{padding:17px;border:1px solid #d29aa2;background:#fff0e966;border-radius:13px;box-shadow:0 8px 24px #70405b0c}
+.info-icon{font-size:18px}.info-card h3{font:700 13px "Space Grotesk",sans-serif;margin:8px 0 4px;color:#563957}.info-card p{font-size:12px;color:#765b70;margin:0}
+.section-title{text-align:center;margin:36px 0 15px;font:600 13px "Space Grotesk",sans-serif;color:#563957;letter-spacing:1.5px}
+.footer{margin-top:45px;border-top:1px solid #70405b35;padding:24px 0 32px;text-align:center;color:#765b70;font-size:11px}
+.footer strong{color:#70476d;font-weight:700}
 @media(max-width:600px){.shell{width:min(100% - 28px,1080px)}.topbar{height:68px}.logo{font-size:19px}.live{font-size:9px;padding:6px 9px}.hero{padding:75px 0 35px}h1{letter-spacing:-2.5px}.intro{font-size:14px}.generate{width:100%}.result-area{padding-bottom:30px}.content{padding:18px}.stats{gap:7px}.stat{padding:10px}.stat strong{font-size:16px}.stat span{font-size:9px}.actions{flex-direction:column}.play,.details{width:100%}.info-grid{gap:8px}.info-card{padding:13px}}
 </style>
 </head>
