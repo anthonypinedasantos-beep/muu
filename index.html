@@ -135,4 +135,41 @@ load();setInterval(load,60000);
 <a class="discord-float" href="https://discord.gg/K5Dxa4mtgP" target="_blank" rel="noopener noreferrer" aria-label="Join RBXCONDOS Discord"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.7 5.2A18.8 18.8 0 0 0 15.1 3.8l-.6 1.2a17.2 17.2 0 0 0-5 0l-.6-1.2a18.8 18.8 0 0 0-4.6 1.4C1.4 9.5.6 13.7 1 17.8a18.7 18.7 0 0 0 5.7 2.9l1.2-2a12 12 0 0 1-1.9-.9l.5-.4a13.4 13.4 0 0 0 13 0l.5.4a12 12 0 0 1-1.9.9l1.2 2a18.7 18.7 0 0 0 5.7-2.9c.5-4.8-.8-8.9-5.3-12.6ZM8.5 14.8c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/></svg><span>Join our Discord</span></a>
 <script>(()=>{const link=document.querySelector('a[href="/notifications/"]');let s={},r=[];try{s=JSON.parse(localStorage.getItem("rbx_settings")||"{}");r=JSON.parse(localStorage.getItem("rbx_notifications_read")||"[]")}catch{}document.documentElement.classList.toggle("rbx-reduce-motion",!!s.reduceMotion);if(!link||s.showBadge===false)return;const ids=["settings-notifications-20261125","updates-page-20261125","requestor-cleanup-20261125"];const n=ids.filter(x=>!r.includes(x)).length;if(n){const b=document.createElement("span");b.className="nav-count";b.textContent=n;b.setAttribute("aria-label",n+" unread notifications");link.append(" ",b)}})();</script><style id="site-notification-badge-style">.nav-count{display:inline-grid;place-items:center;min-width:17px;height:17px;padding:0 5px;border-radius:99px;background:#70476d;color:#fff;font-size:10px;line-height:1}.rbx-reduce-motion *,html.rbx-reduce-motion *{animation:none!important;transition:none!important;scroll-behavior:auto!important}</style><!-- Monetag In-Page Push banner -->
 
+
+<style id="rbx-adblock-wall-style">
+#rbx-adblock-wall{position:fixed;inset:0;z-index:2147483647;display:none;place-items:center;padding:22px;background:rgba(35,22,40,.82);backdrop-filter:blur(12px);font-family:Arial,sans-serif}
+#rbx-adblock-wall.is-visible{display:grid}
+#rbx-adblock-wall .rbx-wall-card{width:min(460px,100%);padding:30px;border:1px solid #e8b7c8;border-radius:20px;background:#fff4ed;color:#432c4c;text-align:center;box-shadow:0 24px 80px #0005}
+#rbx-adblock-wall h2{margin:0 0 10px;font-size:25px}
+#rbx-adblock-wall p{margin:0;color:#70576d;line-height:1.6;font-size:14px}
+#rbx-adblock-wall button{margin-top:20px;border:0;border-radius:10px;padding:13px 22px;background:#70476d;color:white;font-weight:800;cursor:pointer}
+#rbx-adblock-bait{position:absolute!important;left:-10000px!important;top:0!important;width:12px!important;height:12px!important;overflow:hidden!important}
+</style>
+<div id="rbx-adblock-bait" class="adsbox ad-placement adsbygoogle ad-unit"><span>Advertisement</span></div>
+<div id="rbx-adblock-wall" role="alertdialog" aria-modal="true" aria-labelledby="rbx-wall-title">
+  <div class="rbx-wall-card">
+    <h2 id="rbx-wall-title">Ad blocker detected</h2>
+    <p>RBXCONDOS is supported by advertising. Please disable your ad blocker for this website and reload the page to continue.</p>
+    <button type="button" id="rbx-wall-reload">I’ve disabled it — reload</button>
+  </div>
+</div>
+<script>
+(()=> {
+  const choice=document.cookie.split("; ").find(x=>x.startsWith("rbx_cookie_choice="))?.split("=")[1];
+  if(choice!=="accepted") return;
+  const check=()=>{
+    const bait=document.getElementById("rbx-adblock-bait");
+    if(!bait) return;
+    const style=getComputedStyle(bait);
+    const blocked=bait.offsetHeight===0||bait.offsetWidth===0||style.display==="none"||style.visibility==="hidden";
+    if(blocked){
+      document.getElementById("rbx-adblock-wall")?.classList.add("is-visible");
+      document.documentElement.style.overflow="hidden";
+    }
+  };
+  document.getElementById("rbx-wall-reload")?.addEventListener("click",()=>location.reload());
+  setTimeout(check,900);
+})();
+</script>
+
 </body></html>
