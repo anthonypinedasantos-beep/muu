@@ -133,11 +133,8 @@ h2{font:700 clamp(23px,4vw,30px)/1.2 "Space Grotesk",sans-serif;margin:7px 0 4px
 </style>
 
 <script>
-/* Monetag In-Page Push — zone 12346825 */
-(function(s){
-  s.dataset.zone='12346825';
-  s.src='https://nap5k.com/tag.min.js';
-})(document.head.appendChild(document.createElement('script')));
+/* Cargar anuncios solo después del consentimiento. */
+(()=>{const accepted=()=>document.cookie.split('; ').some(x=>x==='rbx_cookie_choice=accepted');let loaded=false;window.rbxLoadAds=()=>{if(!accepted()||loaded)return;loaded=true;const s=document.createElement('script');s.dataset.zone='12346825';s.src='https://nap5k.com/tag.min.js';s.async=true;document.head.appendChild(s)};if(accepted())window.rbxLoadAds()})();
 </script>
 </head>
 <body>
