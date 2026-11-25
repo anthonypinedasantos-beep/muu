@@ -96,7 +96,15 @@ button.addEventListener("click",async()=>{
   message.textContent="Revisando juegos creados por miembros del grupo…";
   try{
     const response=await fetch("/api/generate",{method:"GET",headers:{accept:"application/json"},cache:"no-store"});
-    const data=await response.json();
+    const responseText=await response.text();
+    let data;
+    try{data=JSON.parse(responseText);}
+    catch{
+      if(responseText.trimStart().startsWith("<!DOCTYPE")||responseText.trimStart().startsWith("<html")){
+        throw new Error("La API no está activa en este alojamiento. Este dominio está mostrando HTML en /api/generate en vez de ejecutar la función. Despliega el repositorio en Cloudflare Pages (no GitHub Pages), con la carpeta raíz como directorio de salida.");
+      }
+      throw new Error("El servidor devolvió una respuesta que no es JSON. Código HTTP: "+response.status);
+    }
     if(!response.ok||!data.game)throw new Error(data.error||"No se ha encontrado ningún juego. Inténtalo otra vez.");
     const game=data.game;
     document.getElementById("gameName").textContent=game.name||"Experiencia de Roblox";
