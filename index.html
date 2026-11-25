@@ -1,117 +1,148 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090b12">
-<meta name="description" content="Generador aleatorio de experiencias de Roblox creadas por miembros del grupo, con servidores de 3 jugadores.">
-<title>RBXCONDOS — Game Generator</title>
+<meta name="theme-color" content="#080910">
+<meta name="description" content="Discover random Roblox experiences created by members of the RBXCONDOS community. Every selected experience has servers limited to 3 players.">
+<title>RBXCONDOS — Condo Game Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:dark;--bg:#090b12;--panel:#111521;--line:#252c3d;--muted:#929bb0;--text:#f4f6fb;--accent:#8b7cff;--accent2:#5e50df}
+:root{color-scheme:dark;--bg:#080910;--panel:#111321;--panel2:#171a2b;--line:#292d43;--muted:#9298b1;--text:#f6f5ff;--purple:#9b83ff;--purple2:#7054ed;--cyan:#7ce7e1}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -20%,#28204d 0,transparent 48%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
-.wrap{width:min(900px,calc(100% - 32px));margin:auto}
-.nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12}
-.brand{font-weight:850;letter-spacing:-.7px;font-size:20px}.brand span{color:#a99fff}
-.status{font-size:12px;color:#b8b2ff;border:1px solid #6558bb66;background:#6254c51c;padding:7px 11px;border-radius:99px}
-.hero{text-align:center;padding:clamp(65px,12vh,115px) 0 42px}
-.eyebrow{color:#aaa0ff;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
-h1{font-size:clamp(40px,8vw,70px);line-height:1.02;letter-spacing:-3px;margin:17px 0}
-h1 span{color:#a99fff}
-.hero p{color:var(--muted);max-width:570px;margin:0 auto;font-size:16px}
-.generator{display:flex;justify-content:center;margin:32px auto 0}
-.generate{border:0;border-radius:13px;padding:16px 30px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 10px 35px #6555d544;transition:transform .2s,opacity .2s}
-.generate:hover{transform:translateY(-2px)}.generate:disabled{opacity:.6;cursor:wait;transform:none}
-.hint{color:#7f899f;font-size:12px;margin-top:14px}
-.result-wrap{padding:20px 0 65px;max-width:590px;margin:auto}
-.result{display:none;overflow:hidden;background:linear-gradient(145deg,#151b2a,#10141e);border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 70px #0005}
-.result.visible{display:block}
-.thumb{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#202638}
-.content{padding:20px}
-.kicker{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#aaa0ff;font-weight:800}
-h2{font-size:23px;line-height:1.2;margin:7px 0 5px;letter-spacing:-.5px}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -18%,#33245f 0,transparent 42%),radial-gradient(ellipse at 100% 45%,#152b3c55 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.6 "DM Sans",system-ui,sans-serif}
+a{color:inherit}
+.shell{width:min(1080px,calc(100% - 40px));margin:auto}
+.topbar{height:78px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12}
+.logo{font:700 22px "Space Grotesk",sans-serif;letter-spacing:-1px}.logo span{color:var(--purple)}
+.top-right{display:flex;align-items:center;gap:10px}
+.live{display:flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #5a4b9870;background:#8d74ff12;border-radius:99px;color:#c9bdff;font-size:11px;font-weight:800;letter-spacing:1px}
+.dot{width:7px;height:7px;border-radius:50%;background:#75e5b1;box-shadow:0 0 12px #75e5b1}
+.hero{text-align:center;padding:94px 0 46px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:#c0b4ff;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.eyebrow:before,.eyebrow:after{content:"";width:22px;height:1px;background:#806ce8}
+h1{font:700 clamp(43px,8vw,78px)/.99 "Space Grotesk",sans-serif;letter-spacing:-4px;margin:22px 0 18px}
+h1 span{background:linear-gradient(100deg,#c6b8ff,#8f7bff 55%,#79d9e9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.intro{max-width:650px;margin:auto;color:var(--muted);font-size:16px}
+.cta-row{display:flex;justify-content:center;margin:30px auto 0}
+.generate{display:inline-flex;align-items:center;justify-content:center;gap:11px;border:1px solid #c1b5ff55;border-radius:13px;padding:16px 25px;background:linear-gradient(120deg,#9c83ff,#7054ed);color:white;font:800 14px "DM Sans",sans-serif;cursor:pointer;box-shadow:0 12px 40px #7054ed44;transition:transform .2s,filter .2s}
+.generate:hover{transform:translateY(-2px);filter:brightness(1.08)}.generate:disabled{opacity:.6;cursor:wait;transform:none}
+.generate svg{width:18px;height:18px}
+.subnote{margin-top:14px;color:#777f99;font-size:12px}
+.result-area{max-width:720px;margin:0 auto;padding:10px 0 50px}
+.message{display:none;margin:0 auto 18px;padding:13px 16px;border:1px solid #35334d;background:#131323;border-radius:12px;color:#b9b5d3;text-align:center;font-size:13px}
+.message.visible{display:block}.message.error{border-color:#78454e;color:#ffb6c0;background:#28151d}
+.result{display:none;overflow:hidden;border:1px solid #37314f;border-radius:20px;background:linear-gradient(145deg,#171a2b,#10121d);box-shadow:0 25px 90px #0007}
+.result.visible{display:block;animation:appear .35s ease}
+@keyframes appear{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.cover{position:relative;background:linear-gradient(120deg,#282043,#182333);aspect-ratio:16/7;overflow:hidden}
+.cover:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#10121d)}
+.thumb{width:100%;height:100%;object-fit:cover;display:block}
+.cover-label{position:absolute;z-index:1;left:18px;top:18px;padding:7px 10px;border:1px solid #ffffff2a;background:#0a0b15b8;backdrop-filter:blur(10px);border-radius:8px;font-size:10px;font-weight:800;letter-spacing:1.3px}
+.content{padding:24px}
+.kicker{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#aa99ff;font-weight:800}
+h2{font:700 clamp(23px,4vw,30px)/1.2 "Space Grotesk",sans-serif;margin:7px 0 4px;letter-spacing:-.7px}
 .creator{font-size:13px;color:var(--muted)}
-.stats{display:flex;flex-wrap:wrap;gap:8px;margin:17px 0}
-.pill{font-size:12px;padding:7px 10px;border-radius:8px;background:#252b3c;color:#d6d9e5}
-.pill.good{background:#183c32;color:#8de2bd}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:21px 0}
+.stat{padding:12px 14px;background:#ffffff07;border:1px solid #ffffff10;border-radius:11px}
+.stat strong{display:block;font:700 18px "Space Grotesk",sans-serif;color:#f4f1ff}
+.stat span{display:block;color:#8991a9;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.stat.highlight strong{color:#91e5c1}
 .actions{display:flex;gap:10px;flex-wrap:wrap}
-.play,.details{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:10px;padding:12px 17px;font-weight:800;font-size:13px}
-.play{flex:1;background:#f4f2ff;color:#171426}.details{border:1px solid #343b50;color:#e7e5f5}
-.message{display:none;margin:22px auto 0;padding:15px 18px;max-width:590px;border:1px dashed #343b50;border-radius:13px;color:var(--muted);text-align:center}
-.message.visible{display:block}.message.error{color:#ffb3b3;border-color:#794444}
-.footer{text-align:center;color:#69738a;font-size:12px;border-top:1px solid #ffffff12;padding:24px 0 32px}
-@media(max-width:540px){.nav{height:64px}.status{font-size:10px}.hero{padding-top:70px}h1{letter-spacing:-2px}.generate{width:100%}.actions{flex-direction:column}.play,.details{width:100%}}
+.play,.details{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border-radius:10px;padding:12px 17px;font-size:13px;font-weight:800;transition:filter .2s,transform .2s}
+.play:hover,.details:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.play{flex:1;background:#f3efff;color:#171326}.details{border:1px solid #393d55;color:#e8e5f5}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
+.info-card{padding:17px;border:1px solid #ffffff12;background:#ffffff05;border-radius:13px}
+.info-icon{font-size:18px}.info-card h3{font:700 13px "Space Grotesk",sans-serif;margin:8px 0 4px}.info-card p{font-size:12px;color:var(--muted);margin:0}
+.section-title{text-align:center;margin:36px 0 15px;font:600 13px "Space Grotesk",sans-serif;color:#dcd7f7}
+.footer{margin-top:45px;border-top:1px solid #ffffff12;padding:24px 0 32px;text-align:center;color:#707891;font-size:11px}
+.footer strong{color:#b5a8ff;font-weight:700}
+@media(max-width:600px){.shell{width:min(100% - 28px,1080px)}.topbar{height:68px}.logo{font-size:19px}.live{font-size:9px;padding:6px 9px}.hero{padding:75px 0 35px}h1{letter-spacing:-2.5px}.intro{font-size:14px}.generate{width:100%}.result-area{padding-bottom:30px}.content{padding:18px}.stats{gap:7px}.stat{padding:10px}.stat strong{font-size:16px}.stat span{font-size:9px}.actions{flex-direction:column}.play,.details{width:100%}.info-grid{gap:8px}.info-card{padding:13px}}
 </style>
 </head>
 <body>
-<header class="wrap nav">
-  <div class="brand">RBX<span>CONDOS</span></div>
-  <div class="status">ROBLOX GAME GENERATOR</div>
+<header class="shell topbar">
+  <a class="logo" href="/" aria-label="RBXCONDOS home" style="text-decoration:none">RBX<span>CONDOS</span></a>
+  <div class="top-right"><div class="live"><span class="dot"></span> COMMUNITY GENERATOR</div></div>
 </header>
-<main class="wrap">
+<main class="shell">
   <section class="hero">
-    <div class="eyebrow">Experiencias de nuestra comunidad</div>
-    <h1>Un juego nuevo.<br><span>Un solo clic.</span></h1>
-    <p>Genera una experiencia aleatoria creada por un miembro del grupo de Roblox. Todos los juegos tienen servidores de máximo 3 jugadores.</p>
-    <div class="generator">
-      <button class="generate" id="generate" type="button">🎮 &nbsp; Generar juego</button>
+    <div class="eyebrow">Discover something different</div>
+    <h1>Find your next<br><span>Roblox experience.</span></h1>
+    <p class="intro">Explore random experiences created by members of the RBXCONDOS community. One click brings you a new game to discover, with servers limited to 3 players.</p>
+    <div class="cta-row">
+      <button class="generate" id="generate" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>
+        <span id="buttonText">Generate Condo Game</span>
+      </button>
     </div>
-    <div class="hint">Sin Linkvertise · Enlace directo a Roblox · Máximo 3 jugadores por servidor</div>
+    <div class="subnote">No Linkvertise · Direct Roblox access · 3-player server limit</div>
   </section>
 
-  <section class="result-wrap" aria-live="polite">
+  <section class="result-area" aria-live="polite">
+    <div class="message" id="message">Ready when you are. Generate a game to get started.</div>
     <article class="result" id="result">
-      <img class="thumb" id="thumbnail" alt="Miniatura del juego" hidden>
+      <div class="cover" id="cover">
+        <div class="cover-label">YOUR DISCOVERED EXPERIENCE</div>
+        <img class="thumb" id="thumbnail" alt="Game thumbnail" hidden>
+      </div>
       <div class="content">
-        <div class="kicker">Tu experiencia seleccionada</div>
-        <h2 id="gameName">Juego de Roblox</h2>
-        <div class="creator" id="creator"></div>
+        <div class="kicker">Selected for you</div>
+        <h2 id="gameName">Roblox Experience</h2>
+        <div class="creator" id="creator">Created by a community member</div>
         <div class="stats">
-          <span class="pill good" id="maxPlayers">3 jugadores máximo</span>
-          <span class="pill" id="playing">0 jugando</span>
-          <span class="pill" id="visits">0 visitas</span>
+          <div class="stat highlight"><strong id="maxPlayers">3</strong><span>Max players</span></div>
+          <div class="stat"><strong id="playing">0</strong><span>Playing now</span></div>
+          <div class="stat"><strong id="visits">0</strong><span>Total visits</span></div>
         </div>
         <div class="actions">
-          <a class="play" id="play" href="#" target="_blank" rel="noopener noreferrer">Jugar en Roblox ↗</a>
-          <a class="details" id="details" href="#" target="_blank" rel="noopener noreferrer">Ver página del juego</a>
+          <a class="play" id="play" href="#" target="_blank" rel="noopener noreferrer">Play on Roblox ↗</a>
+          <a class="details" id="details" href="#" target="_blank" rel="noopener noreferrer">View game details</a>
         </div>
       </div>
     </article>
-    <div class="message" id="message">Pulsa el botón para encontrar un juego.</div>
+    <div class="section-title">HOW IT WORKS</div>
+    <div class="info-grid">
+      <div class="info-card"><div class="info-icon">🎲</div><h3>Random discovery</h3><p>Get a different eligible experience selected from creators in our Roblox community.</p></div>
+      <div class="info-card"><div class="info-icon">👥</div><h3>Small servers</h3><p>Every result is checked for an experience server capacity of exactly 3 players.</p></div>
+      <div class="info-card"><div class="info-icon">⚡</div><h3>Quick access</h3><p>Open the experience directly on Roblox or visit its game page for more details.</p></div>
+      <div class="info-card"><div class="info-icon">🛡️</div><h3>Community project</h3><p>RBXCONDOS is an independent discovery project and is not affiliated with Roblox.</p></div>
+    </div>
   </section>
 </main>
-<footer class="wrap footer">RBXCONDOS · Proyecto independiente. No está afiliado a Roblox Corporation.</footer>
+<footer class="shell footer"><strong>RBXCONDOS</strong> · Independent community project · Not affiliated with Roblox Corporation.</footer>
 <script>
+const API_URL="https://crimson-hat-67ce.anthonypinedasantos.workers.dev/";
 const button=document.getElementById("generate");
+const buttonText=document.getElementById("buttonText");
 const result=document.getElementById("result");
 const message=document.getElementById("message");
 const thumbnail=document.getElementById("thumbnail");
-const number=n=>Number(n||0).toLocaleString("es-ES");
+const number=n=>Number(n||0).toLocaleString("en-US");
 
 button.addEventListener("click",async()=>{
   button.disabled=true;
-  button.textContent="Buscando un juego…";
+  buttonText.textContent="Finding a game...";
   result.classList.remove("visible");
   message.className="message visible";
-  message.textContent="Revisando juegos creados por miembros del grupo…";
+  message.textContent="Searching community experiences and checking server limits...";
   try{
-    const response=await fetch("https://crimson-hat-67ce.anthonypinedasantos.workers.dev/",{method:"GET",headers:{accept:"application/json"},cache:"no-store"});
+    const response=await fetch(API_URL,{method:"GET",headers:{accept:"application/json"},cache:"no-store"});
     const responseText=await response.text();
     let data;
     try{data=JSON.parse(responseText);}
-    catch{
-      if(responseText.trimStart().startsWith("<!DOCTYPE")||responseText.trimStart().startsWith("<html")){
-        throw new Error("La API no está activa en este alojamiento. Este dominio está mostrando HTML en /api/generate en vez de ejecutar la función. Despliega el repositorio en Cloudflare Pages (no GitHub Pages), con la carpeta raíz como directorio de salida.");
-      }
-      throw new Error("El servidor devolvió una respuesta que no es JSON. Código HTTP: "+response.status);
-    }
-    if(!response.ok||!data.game)throw new Error(data.error||"No se ha encontrado ningún juego. Inténtalo otra vez.");
+    catch{throw new Error("The game service returned an invalid response. Please try again in a moment.");}
+    if(!response.ok||!data.game)throw new Error(data.error||"No eligible game was found. Please try again.");
     const game=data.game;
-    document.getElementById("gameName").textContent=game.name||"Experiencia de Roblox";
-    document.getElementById("creator").textContent="Creado por "+(game.creator||"un miembro del grupo");
-    document.getElementById("maxPlayers").textContent="3 jugadores máximo";
-    document.getElementById("playing").textContent=number(game.playing)+" jugando";
-    document.getElementById("visits").textContent=number(game.visits)+" visitas";
+    document.getElementById("gameName").textContent=game.name||"Roblox Experience";
+    document.getElementById("creator").textContent="Created by "+(game.creator||"a community member");
+    document.getElementById("maxPlayers").textContent=String(game.maxPlayers||3);
+    document.getElementById("playing").textContent=number(game.playing);
+    document.getElementById("visits").textContent=number(game.visits);
     document.getElementById("play").href=game.startUrl||("https://www.roblox.com/games/start?placeId="+game.placeId);
     document.getElementById("details").href=game.gameUrl||("https://www.roblox.com/games/"+game.placeId);
     if(game.thumbnail){thumbnail.src=game.thumbnail;thumbnail.hidden=false;}
@@ -120,10 +151,10 @@ button.addEventListener("click",async()=>{
     result.classList.add("visible");
   }catch(error){
     message.className="message visible error";
-    message.textContent=error.message||"Ha ocurrido un error. Vuelve a intentarlo.";
+    message.textContent=error.message||"Something went wrong. Please try again.";
   }finally{
     button.disabled=false;
-    button.textContent="🎮  Generar otro juego";
+    buttonText.textContent="Generate Condo Game";
   }
 });
 </script>
