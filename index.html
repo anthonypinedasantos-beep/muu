@@ -105,7 +105,7 @@ footer{border-top:1px solid #70405b35;padding:25px 0 32px;text-align:center;colo
   </div>
   <a class="discord-join" href="https://discord.gg/K5Dxa4mtgP" target="_blank" rel="noopener noreferrer">Join Discord <span>↗</span></a>
 </section></main>
-<footer class="shell"><strong>RBXCONDOS</strong> · Independent community project · Not affiliated with Roblox Corporation.</footer>
+<footer class="shell"><strong>RBXCONDOS</strong> · Independent community project · Not affiliated with Roblox Corporation.<div class="legal-links" style="display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:13px"><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Use</a><a href="/cookies.html">Cookie Policy</a><a href="/disclaimer.html">Disclaimer</a></div></footer>
 <script>
 (()=>{const online=document.getElementById("discord-online"),total=document.getElementById("discord-total");if(!online||!total)return;
 const load=async()=>{try{const r=await fetch("https://discord.com/api/v10/invites/K5Dxa4mtgP?with_counts=true",{cache:"no-store"});if(!r.ok)throw new Error("Discord counts unavailable");const d=await r.json();if(String(d.guild?.id)!=="1570151349935411332")throw new Error("Unexpected Discord server");online.textContent=Number(d.approximate_presence_count||0).toLocaleString();total.textContent=Number(d.approximate_member_count||0).toLocaleString()}catch{online.textContent="—";total.textContent="—"}};
