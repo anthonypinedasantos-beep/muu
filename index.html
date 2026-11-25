@@ -4,8 +4,8 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#e9a5a3">
 <meta name="description" content="RBXCONDOS — discover Roblox experiences from the community.">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="shortcut icon" href="/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
+<link rel="shortcut icon" href="/favicon.svg?v=2">
 <title>RBXCONDOS — Community</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -87,8 +87,8 @@ footer{border-top:1px solid #70405b35;padding:25px 0 32px;text-align:center;colo
 </style>
 
 <script>
-/* Un solo script de anuncios para evitar varias ventanas por una misma pulsación. */
-(()=>{const s=document.createElement("script");s.src="https://al5sm.com/tag.min.js";s.dataset.zone="12346124";s.async=true;document.head.appendChild(s)})();
+/* Cargar anuncios solo después del consentimiento. */
+(()=>{const accepted=()=>document.cookie.split("; ").some(x=>x==="rbx_cookie_choice=accepted");let loaded=false;window.rbxLoadAds=()=>{if(!accepted()||loaded)return;loaded=true;const s=document.createElement("script");s.src="https://al5sm.com/tag.min.js";s.dataset.zone="12346124";s.async=true;document.head.appendChild(s)};if(accepted())window.rbxLoadAds()})();
 </script>
 </head>
 <body>
