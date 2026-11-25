@@ -192,6 +192,26 @@ export default {
       "https://www.rbxcondos.xyz"
     ]);
     if (!allowedOrigins.has(origin)) return json(request, { error: "Origen no permitido." }, 403);
+
+    // Per-IP rate limit: 5 requests per 60 seconds.
+    const clientIp = request.headers.get("CF-Connecting-IP");
+    if (!clientIp) return json(request, { error: "No se pudo identificar la conexión." }, 403);
+    if (!env.RATE_LIMITER) {
+      return json(request, { error: "El límite de solicitudes no está configurado en el servidor." }, 503);
+    }
+    const rateLimit = await env.RATE_LIMITER.limit({ key: "requestor:" + clientIp });
+    if (!rateLimit.success) {
+      return new Response(JSON.stringify({ error: "Has realizado demasiadas solicitudes. Espera un minuto antes de volver a intentarlo." }), {
+        status: 429,
+        headers: {
+          "content-type": "application/json; charset=utf-8",
+          "cache-control": "no-store",
+          "retry-after": "60",
+          ...getCorsHeaders(request)
+        }
+      });
+    }
+
     try {
       if (!env.TURNSTILE_SECRET_KEY) {
         return json(request, { error: "La verificación de seguridad no está configurada en el servidor." }, 503);
