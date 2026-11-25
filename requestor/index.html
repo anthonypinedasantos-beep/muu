@@ -235,7 +235,7 @@ button.addEventListener("click",async()=>{
   message.className="message visible";
   message.textContent="Searching community experiences and checking server limits...";
   try{
-    const response=await fetch(API_URL,{method:"POST",headers:{accept:"application/json","content-type":"application/json"},body:JSON.stringify({turnstileToken:token}),cache:"no-store"});
+    const response=await fetch(API_URL,{method:"POST",headers:{accept:"application/json","content-type":"text/plain;charset=UTF-8"},body:JSON.stringify({turnstileToken:token}),cache:"no-store"});
     const responseText=await response.text();
     let data;
     try{data=JSON.parse(responseText);}
