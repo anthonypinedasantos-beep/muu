@@ -67,9 +67,25 @@ h2{font:700 clamp(23px,4vw,30px)/1.2 "Space Grotesk",sans-serif;margin:7px 0 4px
 .footer{margin-top:45px;border-top:1px solid #70405b35;padding:24px 0 32px;text-align:center;color:#765b70;font-size:11px}
 .footer strong{color:#70476d;font-weight:700}
 @media(max-width:600px){.shell{width:min(100% - 28px,1080px)}.topbar{height:68px}.logo{font-size:19px}.live{font-size:9px;padding:6px 9px}.hero{padding:75px 0 35px}h1{letter-spacing:-2.5px}.intro{font-size:14px}.generate{width:100%}.result-area{padding-bottom:30px}.content{padding:18px}.stats{gap:7px}.stat{padding:10px}.stat strong{font-size:16px}.stat span{font-size:9px}.actions{flex-direction:column}.play,.details{width:100%}.info-grid{gap:8px}.info-card{padding:13px}}
+
+/* Fast branded entry screen */
+#site-loader{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:linear-gradient(155deg,#b786ad 0%,#e5a0a4 42%,#ffd19e 100%);opacity:1;visibility:visible;transition:opacity .24s ease,visibility .24s ease}
+#site-loader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-inner{display:flex;flex-direction:column;align-items:center;gap:17px}
+.loader-brand{font:700 clamp(27px,6vw,36px)/1 "Space Grotesk",sans-serif;letter-spacing:-1.8px;color:#432c4c}
+.loader-brand span{color:#9d5877}
+.loader-track{width:88px;height:3px;border-radius:99px;background:#70476d30;overflow:hidden}
+.loader-track:after{content:"";display:block;width:42%;height:100%;border-radius:99px;background:linear-gradient(90deg,#70476d,#c66d79);animation:loader-progress .75s ease-in-out infinite}
+@keyframes loader-progress{from{transform:translateX(-110%)}to{transform:translateX(250%)}}
+@media(prefers-reduced-motion:reduce){#site-loader{transition:none}.loader-track:after{animation:none;width:100%}}
 </style>
 </head>
 <body>
+<div id="site-loader" role="status" aria-label="Loading RBXCONDOS"><div class="loader-inner"><div class="loader-brand">RBX<span>CONDOS</span></div><div class="loader-track"></div></div></div>
+<script>
+(()=>{const loader=document.getElementById("site-loader");if(!loader)return;const hide=()=>{setTimeout(()=>loader.classList.add("is-hidden"),140)};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",hide,{once:true});else hide();setTimeout(()=>loader.classList.add("is-hidden"),1100);})();
+</script>
+
 <header class="shell topbar">
   <a class="logo" href="/" aria-label="RBXCONDOS home" style="text-decoration:none">RBX<span>CONDOS</span></a>
   <div class="top-right"><a class="live" href="/" style="text-decoration:none"><span class="dot"></span> BACK TO HOME</a></div>
