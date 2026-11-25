@@ -1,60 +1,176 @@
-const JSON_HEADERS = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
-const json = (data, status=200) => new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
-async function getJson(url) {
-  const res = await fetch(url, { headers: { "accept": "application/json", "user-agent": "RBXCONDOS/1.0" } });
-  if (!res.ok) throw new Error("Roblox API respondió " + res.status);
-  return res.json();
-}
-function collectCandidates(value, out=[], seen=new Set()) {
-  if (!value || typeof value !== "object") return out;
-  if (Array.isArray(value)) { for (const item of value) collectCandidates(item,out,seen); return out; }
-  const id = value.universeId ?? value.universeID;
-  const place = value.rootPlaceId ?? value.placeId ?? value.root_place_id;
-  if ((id || place) && (value.name || value.title || value.gameName)) {
-    const key=String(id||place);
-    if(!seen.has(key)){seen.add(key);out.push({universeId:id?String(id):null,placeId:place?String(place):null,name:value.name||value.title||value.gameName,creator:value.creatorName||value.creator?.name||value.creator?.username||value.creatorName,playing:value.playerCount||value.playing||0});}
-  }
-  for(const [k,v] of Object.entries(value)) if(v && typeof v==="object") collectCandidates(v,out,seen);
-  return out;
-}
-async function universeFromPlace(placeId) {
-  const d=await getJson("https://apis.roblox.com/universes/v1/places/"+encodeURIComponent(placeId)+"/universe");
-  return d.universeId ? String(d.universeId) : null;
-}
-export async function onRequestGet({ request }) {
-  const url=new URL(request.url), q=(url.searchParams.get("q")||"").trim().slice(0,80);
-  if(q.length<2) return json({error:"Escribe al menos 2 caracteres."},400);
-  try {
-    const searchUrl=new URL("https://apis.roblox.com/search-api/omni-search");
-    searchUrl.searchParams.set("searchQuery",q);
-    searchUrl.searchParams.set("pageType","Game");
-    searchUrl.searchParams.set("sessionId",crypto.randomUUID());
-    searchUrl.searchParams.set("pageToken","");
-    const searchData=await getJson(searchUrl);
-    const candidates=collectCandidates(searchData).slice(0,35);
-    const resolved=await Promise.all(candidates.map(async c=>{
-      try { const universeId=c.universeId || (c.placeId?await universeFromPlace(c.placeId):null); return universeId?{...c,universeId}:null; } catch { return null; }
-    }));
-    const ids=[...new Set(resolved.filter(Boolean).map(x=>x.universeId))];
-    if(!ids.length) return json({games:[]});
-    const details=await getJson("https://games.roblox.com/v1/games?universeIds="+ids.join(","));
-    const detailMap=new Map((details.data||[]).map(g=>[String(g.id),g]));
-    const eligible=resolved.filter(Boolean).map(c=>({candidate:c,game:detailMap.get(c.universeId)})).filter(x=>x.game && Number(x.game.maxPlayers)===3);
-    const thumbIds=eligible.map(x=>x.game.id);
-    let thumbs={};
-    if(thumbIds.length){
-      try{
-        const t=await getJson("https://thumbnails.roblox.com/v1/games/icons?universeIds="+thumbIds.join(",")+"&size=512x512&format=Png&isCircular=false");
-        for(const item of t.data||[]) if(item.imageUrl) thumbs[String(item.targetId)]=item.imageUrl;
-      }catch{}
+const GROUP_ID = 34356929;
+const MAX_PLAYERS = 3;
+const MEMBER_PAGES = 9;
+const MEMBER_CACHE_TTL = 10 * 60 * 1000;
+const BATCH_SIZE = 15;
+const MAX_BATCHES = 12;
+const CONCURRENCY = 5;
+let memberCache = { expiresAt: 0, ids: [] };
+
+const json = (data, status = 200) => new Response(JSON.stringify(data), {
+  status,
+  headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" }
+});
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+async function robloxGet(url, retries = 3) {
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const response = await fetch(url, {
+        headers: { accept: "application/json", "user-agent": "RBXCONDOS/1.0" },
+        signal: AbortSignal.timeout(12000)
+      });
+      if (response.status === 429) {
+        const wait = Number(response.headers.get("retry-after")) || 2;
+        await sleep(Math.min(wait * 1000, 8000));
+        continue;
+      }
+      if (!response.ok) throw new Error("Roblox API respondió " + response.status);
+      return await response.json();
+    } catch (error) {
+      if (attempt === retries - 1) throw error;
+      await sleep(500 * (attempt + 1));
     }
-    const games=eligible.map(({candidate:c,game:g})=>({
-      universeId:String(g.id),placeId:String(g.rootPlaceId||c.placeId||""),name:g.name||c.name||"Experiencia de Roblox",
-      creator:g.creator?.name||c.creator||"Creador de Roblox",playing:Number(g.playing||c.playing||0),
-      maxPlayers:Number(g.maxPlayers),thumbnail:thumbs[String(g.id)]||""
-    })).filter(g=>g.placeId).slice(0,24);
-    return json({games});
-  } catch(error) {
-    return json({error:"No se pudo buscar en Roblox en este momento. "+(error?.message||"Inténtalo de nuevo más tarde.")},502);
+  }
+  return null;
+}
+
+function shuffle(items) {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+async function fetchGroupMembers() {
+  if (memberCache.ids.length && Date.now() < memberCache.expiresAt) return shuffle(memberCache.ids);
+  const ids = [];
+  let cursor = null;
+  for (let page = 0; page < MEMBER_PAGES; page++) {
+    const url = new URL("https://groups.roblox.com/v1/groups/" + GROUP_ID + "/users");
+    url.searchParams.set("sortOrder", "Desc");
+    url.searchParams.set("limit", "100");
+    if (cursor) url.searchParams.set("cursor", cursor);
+    const data = await robloxGet(url.toString());
+    if (!data) break;
+    for (const item of data.data || []) {
+      const id = item?.user?.userId;
+      if (id) ids.push(Number(id));
+    }
+    cursor = data.nextPageCursor;
+    if (!cursor) break;
+  }
+  if (ids.length) memberCache = { ids: [...new Set(ids)], expiresAt: Date.now() + MEMBER_CACHE_TTL };
+  return shuffle(memberCache.ids);
+}
+
+async function mapWithConcurrency(items, limit, mapper) {
+  const results = new Array(items.length);
+  let next = 0;
+  async function worker() {
+    while (true) {
+      const index = next++;
+      if (index >= items.length) return;
+      try { results[index] = await mapper(items[index]); }
+      catch { results[index] = []; }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return results;
+}
+
+async function fetchUserGames(userId) {
+  const url = new URL("https://games.roblox.com/v2/users/" + userId + "/games");
+  url.searchParams.set("sortOrder", "Desc");
+  url.searchParams.set("limit", "50");
+  url.searchParams.set("accessFilter", "2");
+  const data = await robloxGet(url.toString());
+  return (data?.data || []).filter(game => game?.id && game?.rootPlace?.id);
+}
+
+async function fetchGameDetails(ids) {
+  const result = new Map();
+  for (let i = 0; i < ids.length; i += 100) {
+    const url = new URL("https://games.roblox.com/v1/games");
+    for (const id of ids.slice(i, i + 100)) url.searchParams.append("universeIds", String(id));
+    const data = await robloxGet(url.toString());
+    for (const game of data?.data || []) result.set(Number(game.id), game);
+  }
+  return result;
+}
+
+async function fetchGameIcon(universeId) {
+  try {
+    const url = new URL("https://thumbnails.roblox.com/v1/games/icons");
+    url.searchParams.set("universeIds", String(universeId));
+    url.searchParams.set("returnPolicy", "PlaceHolder");
+    url.searchParams.set("size", "512x512");
+    url.searchParams.set("format", "Png");
+    url.searchParams.set("isCircular", "false");
+    const data = await robloxGet(url.toString());
+    const item = data?.data?.[0];
+    return item?.state === "Completed" ? item.imageUrl || "" : "";
+  } catch { return ""; }
+}
+
+async function findGroupGame() {
+  const members = await fetchGroupMembers();
+  if (!members.length) throw new Error("No se pudieron cargar miembros del grupo de Roblox.");
+  const maxMembers = Math.min(members.length, BATCH_SIZE * MAX_BATCHES);
+  const checked = new Set();
+
+  for (let offset = 0; offset < maxMembers; offset += BATCH_SIZE) {
+    const batch = members.slice(offset, offset + BATCH_SIZE);
+    const lists = await mapWithConcurrency(batch, CONCURRENCY, fetchUserGames);
+    const candidates = new Map();
+    for (const games of lists) {
+      for (const game of games) {
+        const id = Number(game.id);
+        if (id && !checked.has(id)) {
+          checked.add(id);
+          candidates.set(id, game);
+        }
+      }
+    }
+    if (!candidates.size) continue;
+
+    const details = await fetchGameDetails([...candidates.keys()]);
+    const eligible = [];
+    for (const [id, candidate] of candidates) {
+      const info = details.get(id);
+      if (info && Number(info.maxPlayers) === MAX_PLAYERS) eligible.push({ candidate, info });
+    }
+    if (!eligible.length) continue;
+
+    const chosen = eligible[Math.floor(Math.random() * eligible.length)];
+    const info = chosen.info;
+    const placeId = Number(info.rootPlaceId || chosen.candidate.rootPlace?.id);
+    if (!placeId) continue;
+
+    return {
+      universeId: Number(info.id),
+      placeId,
+      name: info.name || chosen.candidate.name || "Experiencia de Roblox",
+      creator: info.creator?.name || chosen.candidate.creator?.name || "Creador del grupo",
+      playing: Number(info.playing || 0),
+      visits: Number(info.visits || 0),
+      maxPlayers: Number(info.maxPlayers),
+      thumbnail: await fetchGameIcon(info.id),
+      gameUrl: "https://www.roblox.com/games/" + placeId,
+      startUrl: "https://www.roblox.com/games/start?placeId=" + placeId
+    };
+  }
+  return null;
+}
+
+export async function onRequestGet() {
+  try {
+    const game = await findGroupGame();
+    if (!game) return json({ error: "No se encontró una experiencia del grupo con exactamente 3 jugadores máximos por servidor. Vuelve a intentarlo." }, 404);
+    return json({ game });
+  } catch (error) {
+    return json({ error: "No se pudo generar un juego ahora mismo. " + (error?.message || "Inténtalo de nuevo más tarde.") }, 502);
   }
 }
