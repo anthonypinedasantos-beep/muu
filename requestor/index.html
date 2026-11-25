@@ -109,7 +109,9 @@ h2{font:700 clamp(23px,4vw,30px)/1.2 "Space Grotesk",sans-serif;margin:7px 0 4px
 .nav-count{display:inline-grid;place-items:center;min-width:17px;height:17px;padding:0 5px;border-radius:99px;background:#70476d;color:#fff;font-size:10px;line-height:1}@media(max-width:700px){.nav a[href="/settings/"],.nav a[href="/updates/"],.nav a[href="/notifications/"]{display:none}}
 </style>
 
-<script>(function(s){s.dataset.zone='12346028',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+<script>
+(()=>{const accepted=()=>document.cookie.split("; ").some(x=>x==="rbx_cookie_choice=accepted");let loaded=false;window.rbxLoadAds=()=>{if(!accepted()||loaded)return;loaded=true;const monetag=document.createElement("script");monetag.dataset.zone="12346028";monetag.src="https://nap5k.com/tag.min.js";monetag.async=true;document.head.appendChild(monetag);const multitag=document.createElement("script");multitag.src="https://quge5.com/88/tag.min.js";multitag.dataset.zone="315337";multitag.async=true;multitag.dataset.cfasync="false";document.head.appendChild(multitag)};if(accepted())window.rbxLoadAds()})();
+</script>
 </head>
 <body>
 <div id="site-loader" role="status" aria-label="Entering RBXCONDOS"><div class="loader-inner"><div class="loader-brand">RBX<span>CONDOS</span></div><div class="loader-track"></div></div></div>
@@ -246,14 +248,14 @@ load();setInterval(load,60000);
 
 <div class="cookie-consent" id="cookie-consent" role="dialog" aria-live="polite" aria-labelledby="cookie-title">
   <h2 id="cookie-title">Your privacy matters</h2>
-  <p>RBXCONDOS uses a small first-party cookie to remember your choice. We do not use advertising or analytics cookies.</p>
+  <p>RBXCONDOS uses a preference cookie and third-party advertising services. Advertising scripts are loaded only if you accept.</p>
   <div class="cookie-actions">
     <button class="cookie-accept" id="cookie-accept" type="button">Accept</button>
     <button class="cookie-reject" id="cookie-reject" type="button">Reject</button>
   </div>
 </div>
 <script>
-(()=>{const banner=document.getElementById("cookie-consent");if(!banner)return;const key="rbx_cookie_choice";const getChoice=()=>document.cookie.split("; ").find(row=>row.startsWith(key+"="));if(!getChoice())banner.classList.add("is-visible");const save=choice=>{document.cookie=key+"="+choice+"; Max-Age=15552000; Path=/; SameSite=Lax; Secure";banner.classList.remove("is-visible")};document.getElementById("cookie-accept").addEventListener("click",()=>save("accepted"));document.getElementById("cookie-reject").addEventListener("click",()=>save("rejected"));})();
+(()=>{const banner=document.getElementById("cookie-consent");if(!banner)return;const key="rbx_cookie_choice";const getChoice=()=>document.cookie.split("; ").find(row=>row.startsWith(key+"="));if(!getChoice())banner.classList.add("is-visible");const save=choice=>{document.cookie=key+"="+choice+"; Max-Age=15552000; Path=/; SameSite=Lax; Secure";banner.classList.remove("is-visible");if(choice==="accepted")window.rbxLoadAds?.()};document.getElementById("cookie-accept").addEventListener("click",()=>save("accepted"));document.getElementById("cookie-reject").addEventListener("click",()=>save("rejected"));})();
 </script>
 <a class="discord-float" href="https://discord.gg/K5Dxa4mtgP" target="_blank" rel="noopener noreferrer" aria-label="Join RBXCONDOS Discord"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.7 5.2A18.8 18.8 0 0 0 15.1 3.8l-.6 1.2a17.2 17.2 0 0 0-5 0l-.6-1.2a18.8 18.8 0 0 0-4.6 1.4C1.4 9.5.6 13.7 1 17.8a18.7 18.7 0 0 0 5.7 2.9l1.2-2a12 12 0 0 1-1.9-.9l.5-.4a13.4 13.4 0 0 0 13 0l.5.4a12 12 0 0 1-1.9.9l1.2 2a18.7 18.7 0 0 0 5.7-2.9c.5-4.8-.8-8.9-5.3-12.6ZM8.5 14.8c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/></svg><span>Join our Discord</span></a>
 <script>(()=>{const link=document.querySelector('a[href="/notifications/"]');let s={},r=[];try{s=JSON.parse(localStorage.getItem("rbx_settings")||"{}");r=JSON.parse(localStorage.getItem("rbx_notifications_read")||"[]")}catch{}document.documentElement.classList.toggle("rbx-reduce-motion",!!s.reduceMotion);if(!link||s.showBadge===false)return;const ids=["settings-notifications-20261125","updates-page-20261125","requestor-cleanup-20261125"];const n=ids.filter(x=>!r.includes(x)).length;if(n){const b=document.createElement("span");b.className="nav-count";b.textContent=n;b.setAttribute("aria-label",n+" unread notifications");link.append(" ",b)}})();</script><style id="site-notification-badge-style">.nav-count{display:inline-grid;place-items:center;min-width:17px;height:17px;padding:0 5px;border-radius:99px;background:#70476d;color:#fff;font-size:10px;line-height:1}.rbx-reduce-motion *,html.rbx-reduce-motion *{animation:none!important;transition:none!important;scroll-behavior:auto!important}</style><!-- Monetag In-Page Push banner -->
