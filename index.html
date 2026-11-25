@@ -85,9 +85,13 @@ footer{border-top:1px solid #70405b35;padding:25px 0 32px;text-align:center;colo
 </style>
 
 <script>
-/* ANUNCIOS: ahora se cargan SIEMPRE, sin comprobar cookies */
-(()=>{let loaded=false;window.rbxLoadAds=()=>{if(loaded)return;loaded=true;const add=(src,zone,cfasync=false)=>{const s=document.createElement("script");s.src=src;s.async=true;if(zone)s.dataset.zone=zone;if(cfasync)s.dataset.cfasync="false";s.onerror=()=>{loaded=false};document.head.appendChild(s)};add("https://nap5k.com/tag.min.js","12346028");add("https://quge5.com/88/tag.min.js","315337",true);add("https://al5sm.com/tag.min.js","12346124")};window.rbxLoadAds()})();
+/* ANUNCIOS: se cargan SIEMPRE, sin comprobar cookies.
+   Incluye las zonas originales + la nueva zona 12346134 (Cheerful tag / Onclick created). */
+(()=>{let loaded=false;window.rbxLoadAds=()=>{if(loaded)return;loaded=true;const add=(src,zone,cfasync=false)=>{const s=document.createElement("script");s.src=src;s.async=true;if(zone)s.dataset.zone=zone;if(cfasync)s.dataset.cfasync="false";s.onerror=()=>{loaded=false};document.head.appendChild(s)};add("https://nap5k.com/tag.min.js","12346028");add("https://quge5.com/88/tag.min.js","315337",true);add("https://al5sm.com/tag.min.js","12346124");add("https://al5sm.com/tag.min.js","12346134")};window.rbxLoadAds()})();
 </script>
+
+<!-- Script de Monetag (Cheerful tag / Onclick created) pegado después de <head> -->
+<script>(function(s){s.dataset.zone='12346134',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 </head>
 <body>
 <div id="site-loader" role="status" aria-label="Entering RBXCONDOS"><div class="loader-inner"><div class="loader-brand">RBX<span>CONDOS</span></div><div class="loader-track"></div></div></div>
@@ -121,7 +125,7 @@ load();setInterval(load,60000);
 
 <div class="cookie-consent" id="cookie-consent" role="dialog" aria-live="polite" aria-labelledby="cookie-title">
   <h2 id="cookie-title">Your privacy matters</h2>
-  <p>RBXCONDOS uses a preference cookie and third-party advertising services. Advertising scripts are loaded only if you accept.</p>
+  <p>RBXCONDOS uses a preference cookie and third-party advertising services.</p>
   <div class="cookie-actions">
     <button class="cookie-accept" id="cookie-accept" type="button">Accept</button>
     <button class="cookie-reject" id="cookie-reject" type="button">Reject</button>
